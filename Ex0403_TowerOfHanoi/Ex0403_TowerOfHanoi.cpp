@@ -45,12 +45,21 @@ void MoveDisk(int from, int to)
 
 void RecurMoveDisks(int n, int from, int temp, int to)
 {
-	// TODO:
+	if (n == 0)
+		return;
+
+	// TODO: // n-1개를 from -> temp
+	RecurMoveDisks(n - 1, from, to, temp);
+
+	MoveDisk(from, to); // 1개를 from -> to (가장 큰 것)
+
+	// TODO: // 그 위에 n-1개를 temp에서 to로 보내기
+	RecurMoveDisks(n - 1, temp, from, to);
 }
 
 int main()
 {
-	int num_disks = 5;
+	int num_disks = 3;
 
 	for (int i = 0; i < num_disks; i++)
 		tower[0].Push('A' + i);

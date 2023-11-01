@@ -8,7 +8,7 @@ int main()
 
 	Queue<char> q(2); // capacity_ = 2에서 시작 (메모리 증가 확인)
 
-	q.SetDebugFlag(true);
+	q.SetDebugFlag(1);
 
 	q.Print();
 
@@ -38,6 +38,5 @@ int main()
 		q.Enqueue(c);
 		q.Print();
 	}
-
 	return 0;
 }
