@@ -7,7 +7,7 @@
 #include <iomanip>
 
 // Double Ended Queue (덱, dequeue와 구분)
-template<typename T>
+template <typename T>
 class Deque : public Queue<T>
 {
 
@@ -17,27 +17,35 @@ public:
 	Deque(int capacity)
 		: Queue<T>(capacity)
 	{
+		// 큐 상속
 	}
 
-	T& Front()
+	T &Front()
 	{
 		return Base::Front();
 	}
 
-	T& Back()
+	T &Back()
 	{
 		return Base::Rear();
 	}
 
-	void PushFront(const T& item)
+	void PushFront(const T &item)
 	{
 		if (Base::IsFull())
 			Base::Resize();
 
 		// TODO:
+
+		Base::queue_[this->front_] = item;
+
+		if (Base::front_ == 0)
+			Base::front_ = Base::capacity_ - 1;
+		else
+			Base::front_ -= 1;
 	}
 
-	void PushBack(const T& item)
+	void PushBack(const T &item)
 	{
 		Base::Enqueue(item);
 	}
@@ -52,6 +60,11 @@ public:
 		assert(!Base::IsEmpty());
 
 		// TODO:
+		// if (Base::rear_ == 0)
+		// 	Base::rear_ = Base::capacity_ - 1;
+		// else
+		// 	Base::rear_ = Base::rear_ - 1;
+		Base::rear_ = (Base::rear_ - 1 + Base::capacity_) % Base::capacity_;
 	}
 
 private:

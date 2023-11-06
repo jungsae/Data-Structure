@@ -6,8 +6,8 @@
 using namespace std;
 
 int Prec(char c); // 연산자 우선순위를 반환
-void InfixToPostfix(Queue<char>& q, Queue<char>& output);
-int EvalPostfix(Queue<char>& q);
+void InfixToPostfix(Queue<char> &q, Queue<char> &output);
+int EvalPostfix(Queue<char> &q);
 
 /*
    infix: A/B-C+D*E-A*C
@@ -27,10 +27,10 @@ int main()
 {
 	// 예제에서는 빈칸 없이 한 자리 숫자만 가능
 
-	//const char infix[] = "8/2+(3+4)*5-1*2";
-	const char infix[] = "1+(1*2+3)*4";
-	//const char infix[] = "1+2*3+3";
-	//const char infix[] = "1+2*(3+1)";
+	const char infix[] = "8/2+(3+4)*5-1*2";
+	// const char infix[] = "1+(1*2+3)*4";
+	// const char infix[] = "1+2*3+3";
+	// const char infix[] = "1+2*(3+1)";
 	const int size = sizeof(infix) / sizeof(char) - 1;
 
 	// 큐에 모두 넣기
@@ -65,7 +65,7 @@ int Prec(char c)
 		return -1; // '('는 우선순위가 아주 낮은 것으로 처리, ')' 닫는 괄호를 만날때까지 남겨두기 위함
 }
 
-void InfixToPostfix(Queue<char>& q, Queue<char>& output)
+void InfixToPostfix(Queue<char> &q, Queue<char> &output)
 {
 	Stack<char> s; // 우선순위가 낮은 연산을 보류하기 위한 스택
 
@@ -78,22 +78,34 @@ void InfixToPostfix(Queue<char>& q, Queue<char>& output)
 
 		cout << c << endl;
 
-		/*
 		if (c >= '0' && c <= '9') // 숫자(피연산자)라면 output에 추가
-			...;
+			output.Enqueue(c);
 		else if (c == '(') // 여는 괄호라면 스택에 추가
-			...;
+			s.Push(c);
 		else if (c == ')') // 닫는 괄호를 만나면
 		{
 			// 여는 괄호 전까지를 스택에서 꺼내서 출력에 넣기
 			// 여는 괄호 제거
+			while (s.Top() != '(')
+			{
+				output.Enqueue(s.Top());
+				s.Pop();
+			}
+
+			s.Pop();
 		}
 		else // 연산자를 만나면
 		{
 			// 스택에서 c보다 우선순위가 높거나 같은 것들을 꺼내서 추가
 			// c는 스택에 추가
+			while (!s.IsEmpty() && Prec(c) <= Prec(s.Top()))
+			{
+				output.Enqueue(s.Top());
+				s.Pop();
+			}
+
+			s.Push(c);
 		}
-		*/
 
 		cout << "Stack: ";
 		s.Print();
@@ -110,7 +122,7 @@ void InfixToPostfix(Queue<char>& q, Queue<char>& output)
 	}
 }
 
-int EvalPostfix(Queue<char>& q)
+int EvalPostfix(Queue<char> &q)
 {
 	Stack<int> s;
 
@@ -121,11 +133,11 @@ int EvalPostfix(Queue<char>& q)
 
 		cout << c << endl;
 
-		/*
 		if (c != '+' && c != '-' && c != '*' && c != '/')
 		{
 			// 입력이 연산자가 아니면 일단 저장
 			// 문자를 숫자로 변환 c - '0' 예: int('9' - '0') -> 정수 9
+			s.Push(int(c - '0'));
 		}
 		else
 		{
@@ -133,18 +145,53 @@ int EvalPostfix(Queue<char>& q)
 
 			// 입력이 연산자이면 스택에서 꺼내서 연산에 사용
 
-			if (c == '+') {
-				...
+			if (c == '+')
+			{
+				// ...
+				int second = s.Top();
+				s.Pop();
+				int first = s.Top();
+				s.Pop();
+
+				int result = first + second;
+
+				s.Push(result);
 			}
-			else if (c == '-') {
-				...
+			else if (c == '-')
+			{
+				// ...
+				int second = s.Top();
+				s.Pop();
+				int first = s.Top();
+				s.Pop();
+
+				int result = first - second;
+
+				s.Push(result);
 			}
-			else if (c == '*') {
-				...
+			else if (c == '*')
+			{
+				// ...
+				int second = s.Top();
+				s.Pop();
+				int first = s.Top();
+				s.Pop();
+
+				int result = first * second;
+
+				s.Push(result);
 			}
 			else if (c == '/')
 			{
-				...
+				// ...
+				int second = s.Top();
+				s.Pop();
+				int first = s.Top();
+				s.Pop();
+
+				int result = first / second;
+
+				s.Push(result);
 			}
 			else
 			{
@@ -152,7 +199,6 @@ int EvalPostfix(Queue<char>& q)
 				exit(-1); // 강제 종료
 			}
 		}
-		*/
 
 		cout << "Stack: ";
 		s.Print();
