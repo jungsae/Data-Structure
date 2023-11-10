@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <math.h>
 #include "../shared/SinglyLinkedList.h"
 
 using namespace std;
@@ -17,6 +18,10 @@ public:
 	void NewTerm(float coef, int exp)
 	{
 		// TODO:
+		Term term;
+		term.coef = coef;
+		term.exp = exp;
+		PushBack(term);
 	}
 
 	float Eval(float x)
@@ -24,21 +29,63 @@ public:
 		float temp = 0.0f;
 
 		// TODO:
+		Node *current = first_;
+		while (current)
+		{
+			temp = temp + (current->item.coef * (powf(x, current->item.exp)));
+
+			current = current->next;
+		}
 
 		return temp;
 	}
 
-	LinkedPolynomial Add(const LinkedPolynomial& poly)
+	LinkedPolynomial Add(const LinkedPolynomial &poly)
 	{
 		// this와 poly의 terms_가 exp의 오름차순으로 정렬되어 있다고 가정
-		// 하나의 다항식 안에 exp가 중복되는 term이 없다라고 가정 (한 exp는 하나의 term만 존재)
+		// 하나의 다항식 안에 exp가 중복되는 term이 없다라고 가정
+		// (한 exp는 하나의 term만 존재)
 
 		LinkedPolynomial temp;
 
-		Node* i = this->first_;
-		Node* j = poly.first_;
+		Node *i = this->first_;
+		Node *j = poly.first_;
 
-		// TODO:
+		while (i && j)
+		{
+			if (i->item.exp == j->item.exp)
+			{
+				float sum = i->item.coef + j->item.coef;
+
+				if (sum)
+					temp.NewTerm(sum, i->item.exp);
+
+				i = i->next;
+				j = j->next;
+			}
+			else if (i->item.exp > j->item.exp)
+			{
+				temp.PushBack(i->item);
+				i = i->next;
+			}
+			else
+			{
+				temp.PushBack(j->item);
+				j = j->next;
+			}
+		}
+
+		while (i)
+		{
+			temp.PushBack(i->item);
+			i = i->next;
+		}
+
+		while (j)
+		{
+			temp.PushBack(j->item);
+			j = j->next;
+		}
 
 		return temp;
 	}
@@ -48,6 +95,26 @@ public:
 		bool is_first = true; // 더하기 출력시 확인용
 
 		// TODO:
+		Node *current = first_;
+
+		if (Size() > 0)
+		{
+			while (current)
+			{
+				if (!is_first)
+					cout << " + ";
+
+				cout << current->item.coef;
+
+				if (current->item.exp != 0)
+					cout << "*x^" << current->item.exp;
+
+				current = current->next;
+				is_first = false;
+			}
+		}
+		else
+			cout << "No Data" << endl;
 
 		cout << endl;
 	}
@@ -59,20 +126,20 @@ int main()
 {
 	using namespace std;
 
-	LinkedPolynomial p1;
+	// LinkedPolynomial p1;
 
-	// exp가 작은 항부터 추가한다고 가정
-	p1.NewTerm(1.0f, 0);	// 1 * x^0 = 1
-	p1.NewTerm(1.5f, 1);	// 1.5 * x^1
-	p1.NewTerm(2.0f, 2);	// 2 * x^2
+	// // exp가 작은 항부터 추가한다고 가정
+	// p1.NewTerm(1.0f, 0); // 1 * x^0 = 1
+	// p1.NewTerm(1.5f, 1); // 1.5 * x^1
+	// p1.NewTerm(2.0f, 2); // 2 * x^2
 
-	p1.Print(); // 1 + 1.5*x^1 + 2*x^2
+	// p1.Print(); // 1 + 1.5*x^1 + 2*x^2
 
-	cout << p1.Eval(0.0f) << endl; // 1 + 1.5*0 + 2*0^2 = 1
-	cout << p1.Eval(1.0f) << endl; // 1 + 1.5*1 + 2*1^2 = 4.5
-	cout << p1.Eval(2.0f) << endl; // 1 + 1.5*2 + 2*2^2 = 1 + 3 + 8 = 12
+	// cout << p1.Eval(0.0f) << endl; // 1 + 1.5*0 + 2*0^2 = 1
+	// cout << p1.Eval(1.0f) << endl; // 1 + 1.5*1 + 2*1^2 = 4.5
+	// cout << p1.Eval(2.0f) << endl; // 1 + 1.5*2 + 2*2^2 = 1 + 3 + 8 = 12
 
-	cout << endl;
+	// cout << endl;
 
 	// Add() Test1
 	cout << "Add() Test" << endl;
