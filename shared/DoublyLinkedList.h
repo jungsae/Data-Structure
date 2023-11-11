@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <algorithm>
 
-template<typename T>
+template <typename T>
 class DoublyLinkedList
 {
 public:
@@ -12,14 +12,24 @@ public:
 	{
 		T item = T();
 
-		Node* left = nullptr;
-		Node* right = nullptr;
+		Node *left = nullptr;
+		Node *right = nullptr;
 
 		// 참고: prev/next가 아니라 left/right
 	};
 
 	DoublyLinkedList()
 	{
+	}
+
+	DoublyLinkedList(const DoublyLinkedList &list)
+	{
+		Node *current = list.first_;
+		while (current)
+		{
+			this->PushBack(current->item);
+			current = current->right;
+		}
 	}
 
 	~DoublyLinkedList()
@@ -29,12 +39,13 @@ public:
 
 	void Clear() // 모두 지워야(delete) 합니다.
 	{
-		// TODO:
+		while (first_)
+			PopFront();
 	}
 
 	bool IsEmpty()
 	{
-		return true; // TODO:
+		return first_ == nullptr;
 	}
 
 	int Size()
@@ -42,6 +53,13 @@ public:
 		int size = 0;
 
 		// TODO:
+		Node *current = first_;
+
+		while (current)
+		{
+			size++;
+			current = current->right;
+		}
 
 		return size;
 	}
@@ -50,7 +68,7 @@ public:
 	{
 		using namespace std;
 
-		Node* current = first_;
+		Node *current = first_;
 
 		if (IsEmpty())
 			cout << "Empty" << endl;
@@ -60,20 +78,46 @@ public:
 
 			cout << " Forward: ";
 			// TODO:
+			while (1)
+			{
+				cout << current->item << ' ';
+
+				if (!current->right)
+					break;
+
+				current = current->right;
+			}
 			cout << endl;
 
 			cout << "Backward: ";
 			// TODO:
+			while (1)
+			{
+				cout << current->item << ' ';
+
+				if (!current->left)
+					break;
+
+				current = current->left;
+			}
 			cout << endl;
 		}
 	}
 
-	Node* Find(T item)
+	Node *Find(T item)
 	{
+		Node *current = first_;
+		while (current)
+		{
+			if (current->item == item)
+				return current;
+			else
+				current = current->right;
+		}
 		return nullptr; // TODO:
 	}
 
-	void InsertBack(Node* node, T item)
+	void InsertBack(Node *node, T item)
 	{
 		if (IsEmpty())
 		{
@@ -88,11 +132,32 @@ public:
 	void PushFront(T item)
 	{
 		// TODO:
+		Node *n_node = new Node;
+		n_node->item = item;
+		n_node->right = first_;
+
+		if (first_)
+			first_->left = n_node;
+
+		first_ = n_node;
 	}
 
 	void PushBack(T item)
 	{
-		// TODO:
+		if (!first_)
+			PushFront(item);
+		else
+		{
+			Node *getLast = first_;
+			while (getLast->right)
+				getLast = getLast->right;
+
+			Node *temp = new Node;
+			temp->item = item;
+			temp->left = getLast;
+
+			getLast->right = temp;
+		}
 	}
 
 	void PopFront()
@@ -128,22 +193,36 @@ public:
 	void Reverse()
 	{
 		// TODO:
+		Node *current = first_;
+		while (current)
+		{
+			Node *temp = current->right;
+			current->right = current->left;
+			current->left = temp;
+
+			current = current->right;
+		}
+
+		first_ = current;
 	}
 
 	T Front()
 	{
 		assert(first_);
 
-		return T(); // TODO:
+		return first_->item; // TODO:
 	}
 
 	T Back()
 	{
 		assert(first_);
+		Node *current = first_;
+		while (current->right)
+			current = current->right;
 
-		return T(); // TODO:
+		return current->item; // TODO:
 	}
 
 protected:
-	Node* first_ = nullptr;
+	Node *first_ = nullptr;
 };
