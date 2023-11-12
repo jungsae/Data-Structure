@@ -23,27 +23,28 @@ int main()
 	// list.Print();
 
 	list.PushBack(5);
-	// list.Print();
-
-	list.Reverse();
 	list.Print();
 
-	// DoublyLinkedList<int>::Node* temp = list.Find(3);
-	// list.InsertBack(temp, 1000);
+	list.Reverse();
 	// list.Print();
 
-	// // PopFront()/Back() 테스트
-	// for (int i = 0; i < 5; i++)
-	// {
-	// 	//list.PopFront();
-	// 	//list.Print();
+	DoublyLinkedList<int>::Node *temp = list.Find(3);
+	list.InsertBack(temp, 1000);
+	// list.Print();
+	// std::cout << std::endl;
 
-	// 	list.PopBack();
-	// 	list.Print();
+	std::cout << "PopFront()/Back() 테스트" << std::endl;
+	for (int i = 0; i < 5; i++)
+	{
+		list.PopFront();
+		list.Print();
 
-	// 	if (!list.IsEmpty())
-	// 		cout << list.Front() << " " << list.Back() << endl;
-	// }
+		list.PopBack();
+		list.Print();
+
+		if (!list.IsEmpty())
+			cout << list.Front() << " " << list.Back() << endl;
+	}
 
 	// Edge case 테스트 주의
 

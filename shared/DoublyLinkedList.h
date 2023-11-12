@@ -126,6 +126,20 @@ public:
 		else
 		{
 			// TODO:
+			Node *current = first_;
+
+			while (current != node)
+				current = current->right;
+
+			Node *next = current->right;
+
+			Node *temp = new Node;
+			temp->item = item;
+
+			current->right = temp;
+			temp->left = current;
+			temp->right = next;
+			next->left = temp;
 		}
 	}
 
@@ -140,13 +154,12 @@ public:
 			first_->left = n_node;
 
 		first_ = n_node;
+		n_node->left = nullptr;
 	}
 
 	void PushBack(T item)
 	{
-		if (!first_)
-			PushFront(item);
-		else
+		if (first_)
 		{
 			Node *getLast = first_;
 			while (getLast->right)
@@ -154,10 +167,14 @@ public:
 
 			Node *temp = new Node;
 			temp->item = item;
+			temp->right = nullptr;
 			temp->left = getLast;
 
 			getLast->right = temp;
 		}
+
+		else
+			PushFront(item);
 	}
 
 	void PopFront()
@@ -172,6 +189,12 @@ public:
 		assert(first_);
 
 		// TODO:
+		Node *temp = first_;
+		first_ = first_->right;
+		if (first_)
+			first_->left = nullptr;
+
+		delete temp;
 	}
 
 	void PopBack()
@@ -188,22 +211,47 @@ public:
 		assert(first_);
 
 		// TODO:
+		Node *current = first_;
+		Node *prev = nullptr;
+		if (current->right)
+		{
+			while (current->right)
+			{
+				prev = current;
+				current = current->right;
+			}
+
+			delete current;
+			prev->right = nullptr;
+		}
+		else
+		{
+			delete first_;
+			first_ = nullptr;
+		}
 	}
 
 	void Reverse()
 	{
 		// TODO:
-		Node *current = first_;
-		while (current)
+		if (IsEmpty())
+			return;
+
+		else
 		{
-			Node *temp = current->right;
-			current->right = current->left;
-			current->left = temp;
+			Node *current = first_;
+			Node *prev = nullptr;
 
-			current = current->right;
+			while (current)
+			{
+				prev = current;
+				current = current->right;
+
+				std::swap(prev->left, prev->right);
+			}
+
+			first_ = prev;
 		}
-
-		first_ = current;
 	}
 
 	T Front()
