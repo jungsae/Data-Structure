@@ -105,20 +105,39 @@ public:
 	}
 
 	void Preorder() { Preorder(root_); }
-	void Preorder(Node *node){
+	void Preorder(Node *node)
+	{
 		// TODO:
+		if (node)
+		{
+			Visit(node);
+			Preorder(node->left);
+			Preorder(node->right);
+		}
 	};
 
 	void Inorder() { Inorder(root_); }
 	void Inorder(Node *node)
 	{
 		// TODO:
+		if (node)
+		{
+			Inorder(node->left);
+			Visit(node);
+			Inorder(node->right);
+		}
 	}
 
 	void Postorder() { Postorder(root_); }
 	void Postorder(Node *node)
 	{
 		// TODO:
+		if (node)
+		{
+			Postorder(node->left);
+			Postorder(node->right);
+			Visit(node);
+		}
 	}
 
 	void LevelOrder()
@@ -129,7 +148,7 @@ public:
 		{
 			Visit(current);
 			// TODO:
-		}
+				}
 	}
 
 	void IterPreorder()
