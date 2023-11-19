@@ -101,6 +101,9 @@ public:
 		if (node)
 		{
 			// TODO: 힌트 Post-order
+			DeleteTree(node->left);
+			DeleteTree(node->right);
+			delete node;
 		}
 	}
 
@@ -148,7 +151,15 @@ public:
 		{
 			Visit(current);
 			// TODO:
-				}
+			if (current->left)
+				q.Enqueue(current->left);
+			if (current->right)
+				q.Enqueue(current->right);
+			if (q.IsEmpty())
+				return;
+			current = q.Front();
+			q.Dequeue();
+		}
 	}
 
 	void IterPreorder()
@@ -162,6 +173,13 @@ public:
 		while (!s.IsEmpty())
 		{
 			// TODO:
+			Node *current = s.Top();
+			s.Pop();
+			Visit(current);
+			if (current->right)
+				s.Push(current->right);
+			if (current->left)
+				s.Push(current->left);
 		}
 	}
 
@@ -176,6 +194,16 @@ public:
 		while (current || !s.IsEmpty())
 		{
 			// TODO:
+			while (current)
+			{
+				s.Push(current);
+				current = current->left;
+			}
+			// std::cout << 'v' << current << std::endl;
+			current = s.Top();
+			s.Pop();
+			Visit(current);
+			current = current->right;
 		}
 	}
 
@@ -190,11 +218,24 @@ public:
 		while (!s1.IsEmpty())
 		{
 			// TODO:
+			Node *current = s1.Top();
+			s1.Pop();
+
+			s2.Push(current);
+
+			if (current->left)
+				s1.Push(current->left);
+			if (current->right)
+				s1.Push(current->right);
 		}
 
 		while (!s2.IsEmpty())
 		{
 			// TODO:
+			Node *current = s2.Top();
+			s2.Pop();
+
+			Visit(current);
 		}
 	}
 

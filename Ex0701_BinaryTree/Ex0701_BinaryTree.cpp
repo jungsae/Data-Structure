@@ -36,7 +36,7 @@ int main()
 	// Node *n7 = new Node{7, nullptr, nullptr};
 
 	n1->right = n3; // <- 연결관계 변경
-	// n3->right = n7;
+	// n3->left = n7;
 
 	BinaryTree<int> tree(n6); // <- n6의 주소를 root node로
 	tree.Print2D();
@@ -58,9 +58,9 @@ int main()
 	// tree.Postorder();
 	// cout << endl;
 
-	cout << "LevelOrder" << endl; // 6 2 5 1 4 3
-	tree.LevelOrder();
-	cout << endl;
+	// cout << "LevelOrder" << endl; // 6 2 5 1 4 3
+	// tree.LevelOrder();
+	// cout << endl;
 
 	// cout << "Iterative Preorder" << endl; // 6 2 1 3 5 4
 	// tree.IterPreorder();
@@ -70,9 +70,9 @@ int main()
 	// tree.IterInorder();
 	// cout << endl;
 
-	// cout << "Iterative Postorder" << endl; // 3 1 2 4 5 6
-	// tree.IterPostorder();
-	// cout << endl;
+	cout << "Iterative Postorder" << endl; // 3 1 2 4 5 6
+	tree.IterPostorder();
+	cout << endl;
 
 	// 트리 소멸자에서 삭제
 	// delete n1;
