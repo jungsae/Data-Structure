@@ -81,6 +81,35 @@ public:
 		heap_[current] = item; // 최종적으로 결정된 위치에 복사
 	}
 
+	// void Push(const T &item) // 반대로 넣기
+	// {
+	// 	using namespace std;
+	// 	cout << "Push " << item << endl;
+
+	// 	if (size_ == capacity_)
+	// 		Resize(capacity_ * 2);
+
+	// 	// 삽입: 일단 맨 마지막에 삽입한 후에 부모 노드로 올린다.
+
+	// 	size_ += 1;
+	// 	int current = size_; // 마지막에 추가가될 위치 (인덱스)
+
+	// 	while (current != 1 && heap_[current / 2] > item) // 부모 위치의 값이 추가하려는 값보다 크다면
+	// 	{
+	// 		// 부모 위치의 값을 자식 위치로 복사해서 내린다.
+	// 		// TODO:
+	// 		heap_[current] = heap_[current / 2];
+
+	// 		cout << "Current = " << current << endl;
+	// 		Print();
+
+	// 		// TODO:
+	// 		current = current / 2;
+	// 	}
+
+	// 	heap_[current] = item; // 최종적으로 결정된 위치에 복사
+	// }
+
 	void Pop()
 	{
 		assert(!IsEmpty());
@@ -131,6 +160,57 @@ public:
 
 		heap_[current] = last_item;
 	}
+
+	// void Pop() // 반대로
+	// {
+	// 	assert(!IsEmpty());
+
+	// 	using namespace std;
+	// 	cout << "Pop()" << endl;
+
+	// 	heap_[1].~T(); // 소멸자 호출
+
+	// 	// 삭제: 가장 마지막 값을 루트로 옮긴 후에 내려 보낸다.
+
+	// 	T last_item = heap_[size_]; // 마지막 아이템 복사
+	// 	size_--;					// 크기 줄이기
+
+	// 	int current = 1; // 루트 노드에서 시작
+	// 	int child = 2;	 // current * 2 (루트의 왼쪽 자식 인덱스)
+	// 	while (child <= size_)
+	// 	{
+	// 		// left, right 중에서 더 큰 자식의 인덱스를 찾는다. 이때 자식이 하나라면 찾을 필요 없음
+	// 		// TODO:
+	// 		// if (heap_[current * 2] && heap_[(current * 2) + 1])
+	// 		// {
+	// 		// 	if (heap_[current * 2] > heap_[(current * 2) + 1])
+	// 		// 		child = current * 2;
+	// 		// 	else
+	// 		// 		child = (current * 2) + 1;
+	// 		// }
+	// 		if (child < size_ && heap_[child] > heap_[child + 1])
+	// 			child++;
+
+	// 		// 현재(current) 값이 더 큰 자식의 값 이상이면 더이상 적절한 위치를 찾을 필요가 없기 때문에 루프 중단
+	// 		// TODO:
+	// 		if (last_item <= heap_[child])
+	// 			break;
+
+	// 		// 자식 값을 부모 위치로 복사,
+	// 		// TOD:
+	// 		heap_[current] = heap_[child];
+
+	// 		cout << "Current = " << current << ", child = " << child << endl;
+	// 		Print();
+
+	// 		// 그 자식 위치로 current 인덱스 변경, child 인덱스도 그 다음 자식 위치로 변경
+	// 		// TODO:
+	// 		current = child;
+	// 		child = child * 2;
+	// 	}
+
+	// 	heap_[current] = last_item;
+	// }
 
 private:
 	T *heap_ = nullptr;
