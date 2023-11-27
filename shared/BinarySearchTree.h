@@ -96,6 +96,16 @@ public:
 		// 힌트: RecurGet()
 
 		// TODO:
+		if (!node)
+			return new Node{item, nullptr, nullptr};
+
+		if (item.key < node->item.key)
+			node->left = Insert(node->left, item);
+
+		if (item.key > node->item.key)
+			node->right = Insert(node->right, item);
+		else
+			node->item = item;
 
 		return node;
 	}
